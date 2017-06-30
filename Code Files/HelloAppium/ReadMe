@@ -1,0 +1,62 @@
+Hi Folks,
+
+This project is created while the book Mobile Test automation with Appium was being authored. Since I have used Mac OSX,
+most of the project path are local to my machine.
+
+I. This project contains the below items:
+
+    1. app folder - It contains the app under test
+    2. Features folder - It contains the   feature files which are the Cucumber scenarios
+    3. Pages - It contains the Page class for various pages in the Quikr app
+    4. Steps - It contains the step implementation of the feature files
+    5. Build.gradle - It's the gradle file for the project. It contains the task to run the functional test based on the
+                      parameter "tags".
+
+
+This code base is slightly different and I have done couple of more refactoring like
+    1. moving the Desired Capabilities for iOS to Starting Steps
+    2. adding one more System parameter to decide whether the test starts Android or iOS
+    3. app path are relative to code base and not the absolute path
+
+II. To run the android test in the project:
+     1. Check out the project
+     2. Launch an emulator or connect a device
+     3. Update the StartingSteps class file with the :
+            a.) same Platform Version as of Device/Emulator
+
+          capabilities.setCapability("platformVersion", "5.1");
+
+     4. Launch the terminal and run the below command to run the test
+
+     gradle clean build runAllTest -Dtags=@search -DtargetDevice=android
+
+
+III. To run the iOS test, you don't need to start the simulator. Make sure the simulator is there on your machine with below config:
+
+
+        capabilities.setCapability("platformVersion", "8.4");
+        capabilities.setCapability("deviceName", "iPhone 6");
+
+        Launch the terminal and run the below command to run the test
+
+     gradle clean build runAllTest -Dtags=@iOS -DtargetDevice=ios
+
+
+IV. To run the mobile web test, update the scenario with the tag @search and make sure the simulator is started. Then run the following command:
+
+      gradle clean build runAllTest -Dtags=@search -DtargetDevice=mweb
+
+
+V. I have also included cucumber-sandwich.jar to generate beautiful HTML reports for cucumber test. Usage is
+
+    1. Run the test from terminal/command prompt
+    2. on the terminal, type in the below command
+        java -jar cucumber-sandwich.jar -n -f build/reports/cucumber -o output/report
+    3. This will create a report in output/report folder of the current directory
+
+
+This pretty much completes the project. For any support with respect to the book,
+you can reach out to me on my email id: nishuverma@gmail.com
+
+Happy Reading !
+Nishant Verma!

@@ -1,0 +1,37 @@
+group 'com.test'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'info.cukes', name: 'cucumber-java', version: '1.2.5'
+    compile group: 'io.appium', name: 'java-client', version: '5.0.0-BETA8'
+}
+
+task runAllTest(type: Test, dependsOn: ['clean', 'build']) {
+    doLast {
+        String tags = getTags()
+        javaexec {
+            main = "cucumber.api.cli.Main"
+            classpath = sourceSets.test.runtimeClasspath
+            args = ["-p", "pretty", "-p", "json:${reporting.baseDir}/cucumber/cucumber.json", "--glue", "steps", "-t", tags, "${project.projectDir}/src/test/java/features"]
+            systemProperties = [
+                                "targetDevice": System.getProperty("targetDevice")
+                                ]
+        }
+    }
+}
+
+private String getTags() {
+    def tags = System.getProperty("tags")
+    if (tags != null)
+        return tags;
+    return "~wip"
+}
